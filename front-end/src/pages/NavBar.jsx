@@ -13,11 +13,6 @@ export default function NavBar() {
                 </li>
 
                 <li>
-                    <Link to = '/articles/individual'> Indivisual Articles 
-                    </Link>
-                </li>
-
-                <li>
                     <Link to = '/articles'> Articles 
                     </Link>
                 </li>

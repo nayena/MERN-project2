@@ -7,11 +7,13 @@ import ArticlesListPage from './pages/ArticlesList';
 import ArticlePage from './pages/ArticlePage';
 import AboutPage from './pages/AboutPage';
 import Layout from './pages/Layout';
+import PageNotFound from './pages/PageNotFound';
 
 const routes= [{
   path: '/',
   element: <Layout/>, 
-  children: [{
+  errorElement: <PageNotFound/>,
+  children: [{  
   path: '/',
   element : <HomePage/>
 }, 
@@ -20,7 +22,7 @@ const routes= [{
   element: <ArticlesListPage/>
 },
 {
-  path: '/articles/individual',
+  path: '/articles/:name',   //route parameters
   element: <ArticlePage/>
 },
 {
