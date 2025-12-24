@@ -4,26 +4,35 @@ import articles from '../article-content';
 import axios from 'axios';
 import AddCommentForm from '../AddCommentForm';
 import {CommentsList} from '../CommentsList';
+import useUser from '../useUser';
 export default function ArticlePage(){
+
     
     const {name}   = useParams() ;
     const {upvotes: initialUpvotes , comments: initialComments} = useLoaderData(); 
     const [upvotes, setUpvotes] = useState(initialUpvotes) ;
-    const article  = articles.find(a => a.name === name ) ; 
     const [comments , setComments] = useState(initialComments) ; 
+    const article  = articles.find(a => a.name === name ) ; 
+
+    const  {isLoading , user } = useUser(); 
+
 
     async function onUpvotedClicked(){
-        const response  = await axios.post('/api/articles/' + name + '/upvote');
+        const token = user && await user.getIdToken() ;
+        const headers = token ? { authtoken : token} : {} ; 
+        const response  = await axios.post('/api/articles/' + name + '/upvote' , null , {headers});
         const updatedArticleData = response.data ; 
         setUpvotes(updatedArticleData.upvotes); 
          
     }
 
     async function onAddComment({nameText, commentText}){
+        const token = user && await user.getIdToken() ;
+        const headers = token ? { authtoken : token} : {} ; 
         const response  = await axios.post('/api/articles/' + name + '/comments' , {
             postedBy : nameText ,
             text : commentText , 
-        });
+        }, {headers});
         const updatedArticleData = response.data ; 
         setComments(updatedArticleData.comments); 
     }
@@ -31,10 +40,11 @@ export default function ArticlePage(){
     return( 
     <>
     <h1> {article.title}</h1>
-    <button onClick={onUpvotedClicked} >Upvoted</button>
+    {user && <button onClick={onUpvotedClicked} >Upvoted</button>}
     <p> This  article has {upvotes} upvotes! </p>
     {article.content.map(p => <p key={p}> {p} </p>)}
-    <AddCommentForm onAddComment={onAddComment}/>
+    { user ? <AddCommentForm onAddComment={onAddComment}/>:
+    <p>Log In to add a comment</p>}
     <CommentsList comments={comments}/>
     </>
     ); 

@@ -9,6 +9,8 @@ import ArticlePage, { Loader as articleLoader } from './pages/ArticlePage';
 import AboutPage from './pages/AboutPage';
 import Layout from './pages/Layout';
 import PageNotFound from './pages/PageNotFound';
+import LoginPage from './pages/LoginPage';
+import CreateAccountPage from './pages/CreateAccountPage';
 
 const routes= [{
   path: '/',
@@ -30,7 +32,16 @@ const routes= [{
 {
   path: '/about',
   element: <AboutPage/>
-}]
+},
+{
+  path: '/login',
+  element: <LoginPage/>
+},
+{
+  path: 'signup',
+  element: <CreateAccountPage/>
+}
+]
 
 }]
 
